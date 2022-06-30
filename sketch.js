@@ -14,6 +14,7 @@ function draw() {
   background(0);
   for (let i = 0; i < Particles.length; i++) {
     Particles[i].update(i);
+    Particles[i].checkEdges();
     Particles[i].show();
     for(let j = 0; j < Particles.length; j++){
       if(i != j){
@@ -51,7 +52,21 @@ class Particle {
     force.normalize();
     let strength = (this.mass * p.mass) / (distance * distance);
     if(strength > 3){strength = 3}
+    if(strength < 0.01){strength = 0.01}
     force.mult(strength/5);
     this.acc.sub(force);
+  }
+
+  checkEdges() {
+    if (this.pos.x > width) {
+      this.pos.x = 0;
+    } else if (this.pos.x < 0) {
+      this.pos.x = width;
+    }
+    if (this.pos.y > height) {
+      this.pos.y = 0;
+    } else if (this.pos.y < 0) {
+      this.pos.y = height;
+    }
   }
 }
